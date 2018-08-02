@@ -41,11 +41,13 @@ contract Campaign {
     }
     
     //--------Define Main Contract Functions-----------
-    function contribute() public payable {
+   function contribute() public payable {
         require(msg.value >= minimumContribution,"Donation must exceed minimum contribution");
-        //Add sender to list of contributors
-        contributors[msg.sender] = true;
-        contributerCount++;
+        if (!contributors[msg.sender]) {       // ONLY unique contributers
+            contributors[msg.sender] = true;   // Add sender to list of contributers
+            contributerCount++;
+        }
+        // Allow multiple donations from same contributor but ONLY count them as one unique contributor
     }
     
     function createRequest(string description, address recipient, uint value) 
@@ -75,8 +77,8 @@ contract Campaign {
 
 //-----------Future Updates--------------
 /*
-    - Add a voting mechanism (DONE)
-    - Add approveRequest() (DONE) and finalizeRequest() (DONE) functions
+    - (DONE) Add a voting mechanism 
+    - (DONE) Add approveRequest() and finalizeRequest() functions
     - Add Donation phase/state. Then upon reaching goal enter the spending state
        which unlocks ability to create, vote for, and finalize spend requests
        Make use of: //--------Introduce State Flow to Smart Contract-----------
@@ -84,7 +86,7 @@ contract Campaign {
        balance (unless we can rely on ETH to do this)
     - Add a pull payment function which allows users to withdraw funds after a specified time
        if the campaign goal is not met
-    - contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT)
+    - (FIXED) contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT) 
 */
 
 //-----------Questions--------------
