@@ -2,6 +2,23 @@
 // A collection of smart contracts for a basic kickstart campaign Solidity/React dApp
 pragma solidity ^0.4.24;
 
+// Campaign Headquarters: A Multi-Campaign Managing Contract 
+// which solves the Campaign deployment problem (security/app-integration)
+contract CampaignHQ {
+    address[] public activeCampaigns;
+    
+    function createCampaign(uint _minCont) public returns(address) {
+        // Creates contract, deploys and returns address
+        address newCampaign = new Campaign(msg.sender, _minCont); 
+        activeCampaigns.push(newCampaign);
+    }
+    
+    function getActiveCampaigns() public view returns(address[]) {
+        return activeCampaigns;
+    }
+}
+
+
 // Main Campaign Contract
 contract Campaign {
     
