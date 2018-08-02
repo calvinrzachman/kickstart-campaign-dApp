@@ -19,7 +19,7 @@ contract Campaign {
     //--------Define Contract Variables-----------
     address public manager;
     uint public minimumContribution;
-    mapping(address => bool) public approvers; 
+    mapping(address => bool) public contributors; 
     Request[] public requests;
     uint public contributerCount;
     
@@ -30,7 +30,7 @@ contract Campaign {
     }
 
     modifier hasDonated() {
-        require(approvers[msg.sender], "Only campaign contributers can call");
+        require(contributors[msg.sender], "Only campaign contributors can call");
         _;
     }
     
@@ -43,8 +43,8 @@ contract Campaign {
     //--------Define Main Contract Functions-----------
     function contribute() public payable {
         require(msg.value >= minimumContribution,"Donation must exceed minimum contribution");
-        //Add sender to list of contributers
-        approvers[msg.sender] = true;
+        //Add sender to list of contributors
+        contributors[msg.sender] = true;
         contributerCount++;
     }
     
@@ -84,6 +84,7 @@ contract Campaign {
        balance (unless we can rely on ETH to do this)
     - Add a pull payment function which allows users to withdraw funds after a specified time
        if the campaign goal is not met
+    - contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT)
 */
 
 //-----------Questions--------------
