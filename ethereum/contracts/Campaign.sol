@@ -21,6 +21,7 @@ contract Campaign {
     uint public minimumContribution;
     mapping(address => bool) public approvers; 
     Request[] public requests;
+    uint public contributerCount;
     
     //--------Define Function Modifiers-----------
     modifier onlyManager() {
@@ -60,13 +61,21 @@ contract Campaign {
         requests.push(newRequest);
         // Campaign manager creates a request to spend funds
     }
+
+    function finalizeRequest(uint index) public onlyManager() {
+        Request storage request = requests[index];
+        require(!request.complete, "Request already finalized");
+        require(request.approvalCount > (contributerCount / 2), "Quorum not reached");
+        request.complete = true;
+        request.recipient.transfer(request.value);
+    }
     
 }
 
 //-----------Future Updates--------------
 /*
     - Add a voting mechanism (DONE)
-    - Add approveRequest() (DONE) and finalizeRequest() functions
+    - Add approveRequest() (DONE) and finalizeRequest() (DONE) functions
     - Add Donation phase/state. Then upon reaching goal enter the spending state
        which unlocks ability to create, vote for, and finalize spend requests
        Make use of: //--------Introduce State Flow to Smart Contract-----------
