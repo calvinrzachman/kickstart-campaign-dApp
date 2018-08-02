@@ -41,7 +41,7 @@ contract Campaign {
     }
     
     //--------Define Main Contract Functions-----------
-   function contribute() public payable {
+    function contribute() public payable {
         require(msg.value >= minimumContribution,"Donation must exceed minimum contribution");
         if (!contributors[msg.sender]) {       // ONLY unique contributers
             contributors[msg.sender] = true;   // Add sender to list of contributers
@@ -89,6 +89,11 @@ contract Campaign {
     - (FIXED) contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT) 
 */
 
-//-----------Questions--------------
+/*-----------Questions--------------
+    - Do I need to add check that spend requests do not attempt to transfer more than contract 
+       balance? Will Ethereum automatically handle this? -- Yes but perhaps it doesnt provide
+       much info to user on error
+
+*/  
 //-----------Changes--------------
 //-----------Testing--------------
