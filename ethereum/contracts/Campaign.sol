@@ -38,7 +38,7 @@ contract Campaign {
     uint public minimumContribution;
     mapping(address => bool) public contributors; 
     Request[] public requests;
-    uint public contributerCount;
+    uint public contributorCount;
     
     //--------Define Function Modifiers-----------
     modifier onlyManager() {
@@ -62,7 +62,7 @@ contract Campaign {
         require(msg.value >= minimumContribution,"Donation must exceed minimum contribution");
         if (!contributors[msg.sender]) {       // ONLY unique contributers
             contributors[msg.sender] = true;   // Add sender to list of contributers
-            contributerCount++;
+            contributorCount++;
         }
         // Allow multiple donations from same contributor but ONLY count them as one unique contributor
     }
@@ -95,7 +95,7 @@ contract Campaign {
     function finalizeRequest(uint index) public onlyManager() {
         Request storage request = requests[index];
         require(!request.complete, "Request already finalized");
-        require(request.approvalCount > (contributerCount / 2), "Quorum not reached");
+        require(request.approvalCount > (contributorCount / 2), "Quorum not reached");
         request.complete = true;
         request.recipient.transfer(request.value);
     }
