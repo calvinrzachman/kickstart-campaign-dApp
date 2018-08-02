@@ -11,7 +11,9 @@ contract Campaign {
         address recipient;      // Indicate end recipient 
         uint value;             // The amount to be paid to recipient
         bool complete; 
-        // Add Voting Mechanism
+        // Voting mechanism
+        mapping(address => bool) approvals;
+        uint approvalCount;     // Track vote count (can't iterate over mapping)
     } 
     
     //--------Define Contract Variables-----------
@@ -23,6 +25,11 @@ contract Campaign {
     //--------Define Function Modifiers-----------
     modifier onlyManager() {
         require(msg.sender == manager, "Only the campaign mangager can call");
+        _;
+    }
+
+    modifier hasDonated() {
+        require(approvers[msg.sender], "Only campaign contributers can call");
         _;
     }
     
@@ -46,7 +53,8 @@ contract Campaign {
             description: description,
             recipient: recipient,
             value: value,
-            complete: false
+            complete: false,
+            approvalCount: 0
         });   
       
         requests.push(newRequest);
@@ -57,8 +65,8 @@ contract Campaign {
 
 //-----------Future Updates--------------
 /*
-    - Add a voting mechanism
-    - Add approveRequest() and finalizeRequest() functions
+    - Add a voting mechanism (DONE)
+    - Add approveRequest() (DONE) and finalizeRequest() functions
     - Add Donation phase/state. Then upon reaching goal enter the spending state
        which unlocks ability to create, vote for, and finalize spend requests
        Make use of: //--------Introduce State Flow to Smart Contract-----------
