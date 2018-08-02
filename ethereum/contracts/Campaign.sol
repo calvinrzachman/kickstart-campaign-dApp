@@ -82,6 +82,16 @@ contract Campaign {
         // Campaign manager creates a request to spend funds
     }
 
+    function approveRequest(uint index) public hasDonated() {
+        // Participants can approve a Spend Request 
+        Request storage request = requests[index];
+        
+        // Participants can only vote once on a spending request
+        require(!request.approvals[msg.sender], "Already approved");
+        request.approvals[msg.sender] = true;
+        request.approvalCount++;
+    }
+
     function finalizeRequest(uint index) public onlyManager() {
         Request storage request = requests[index];
         require(!request.complete, "Request already finalized");
