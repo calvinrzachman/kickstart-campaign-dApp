@@ -45,6 +45,7 @@ contract Campaign {
         require(msg.value >= minimumContribution,"Donation must exceed minimum contribution");
         //Add sender to list of contributers
         approvers[msg.sender] = true;
+        contributerCount++;
     }
     
     function createRequest(string description, address recipient, uint value) 
