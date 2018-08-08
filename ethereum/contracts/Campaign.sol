@@ -100,6 +100,21 @@ contract Campaign {
         request.recipient.transfer(request.value);
     }
     
+     // UPDATE (FRONT END REACT HELPER)
+    function getSummary() public view returns (uint, uint, uint, uint, address) {
+        return (
+            this.balance,
+            minimumContribution, 
+            requests.length,
+            contributorCount,
+            manager
+        );
+    }
+
+    function getRequestsCount() public view returns (uint) {
+        return requests.length;
+    }
+    
 }
 
 //-----------Future Updates--------------
