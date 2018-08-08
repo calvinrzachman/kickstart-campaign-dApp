@@ -55,9 +55,27 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
   
   Here you will be presented with a collection of information on the campaign including:
     
-  
-  
-   
+    • Address of the Owner
+    • Balance
+    • Minimum Contribution in Wei
+    • Number of Contributors
+    • Number of Requests
     
+  From here you can contribute to the campaign or `View Reqeusts`
+  
+  #### Add New Requests (Campaign Managers only) 
+  1. Select `View Requests`
+  2. Select `Add Requests`
+  3. Specify the amount to be spent, the recipient, and a short description for the request
+  4. Select `Create Request`
+  
+  #### Approve Requests (Campaign Contributors only)
+  #### Finalize Requests (Campaign Managers only)
+  
+  Note: This application makes use of Infura and the Ethereum Rinkeby Test Network. Anytime you make a transaction to the
+  test network you will need to wait for transaction confirmation before the application will display the resulting
+  state changes
+  
+  
   ### Unit test with Mocha  
     npm run test
