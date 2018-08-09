@@ -20,6 +20,3 @@ export default () => {
     </Menu>
   );
 };
-
-// Anchor Tag
-// Link Tag is a generic wrapper component which wraps its children with a click event handler

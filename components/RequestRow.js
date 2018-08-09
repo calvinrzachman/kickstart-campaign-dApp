@@ -87,7 +87,6 @@ class RequestRow extends Component {
             </Button>
           )}
         </Cell>
-        {/* <Message error header={"Oops!"} content={this.state.errorMessage} /> */}
       </Row>
     );
   }
