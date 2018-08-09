@@ -36,10 +36,9 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
     npm run dev
       
   ### Create a Kickstart Campaign 
-  You can launch have users fund your campaigns. Campaign owners create requests to spend the donations 
+  Launch a kickstart campaign. Campaign owners create requests to spend the donations 
   they receive. Campaign contributors then vote on which requests they approve. 
-  In order for the owner to spend the funds, the request must reach a quorum of approval from the contributors 
-  of the campaign. 
+  In order for the owner to spend funds, the request must reach a quorum of approval from the campaign contributors. 
  
   This provides additional assurance to campaign contributors that their donations will not be misallocated. 
   The smart contract allows the owner to spend funds ONLY when a specified portion of campaign contributors vote for 
