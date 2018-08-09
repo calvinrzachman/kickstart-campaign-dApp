@@ -9,11 +9,11 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
   
     npm install
     
-  3. Compile and Deploy the Smart Contract 
+  3. Compile and Deploy the Smart Contract
    a. Navigate to the ./ethereum directory and run:
     
     node compile.js
-    
+   
    b. After compiling, deploy the smart contract using:
    
     node deploy.js
@@ -23,7 +23,7 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
     Attempting to deploy from:  <Ethereum External Account Address (ex: Metamask)>
     Contract deployed to:  <Contract Address>
   
-  4. Create a local instance of the CampaignHQ smart contract  
+  4. Create a local instance of the CampaignHQ smart contract
    a. Add the contract address to the hq.js file within ./ethereum directory:
    
     const instance = new web3.eth.Contract(
