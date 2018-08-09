@@ -1,4 +1,4 @@
-// Configure Web3 using Metamask Provider
+// Configure Web3 using Metamask/Infura Provider
 import Web3 from "web3";
 
 let web3;
@@ -15,12 +15,3 @@ if (typeof window !== "undefined" && window.web3 !== "undefined") {
 }
 
 export default web3;
-
-// ERROR: window is not defined !!
-// Next makes use of server side rendering: whenever someone accesses our Next.js server,
-// the server will take the React application, try to render the entire app itself, build an HTML
-// document which it thens sends to the browser. BENEFIT: Users see content rendered much more quickly
-
-// We have also assumed users are running Metamask
-// We will collect all the data server side so that users can interact with our app WITHOUT Metamask
-// ENSURE this code can be executed on either the server or the browser
