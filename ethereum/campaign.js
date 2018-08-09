@@ -6,4 +6,4 @@ export default address => {
   return new web3.eth.Contract(JSON.parse(Campaign.interface), address);
 };
 
-// Return a instance of the campaign contract at the given address
+// Return an instance of the campaign contract at the given address
