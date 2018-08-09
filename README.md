@@ -9,11 +9,11 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
   
     npm install
     
-  3. Compile and Deploy the Smart Contract 
+  3. Compile and Deploy the Smart Contract  
    a. Navigate to the ./ethereum directory and run:
     
     node compile.js
-    
+   
    b. After compiling, deploy the smart contract using:
    
     node deploy.js
@@ -23,8 +23,9 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
     Attempting to deploy from:  <Ethereum External Account Address (ex: Metamask)>
     Contract deployed to:  <Contract Address>
   
+  
   4. Create a local instance of the CampaignHQ smart contract  
-   a. Add the contract address to the hq.js file within ./ethereum directory:
+    a. Add the contract address to the hq.js file within ./ethereum directory:
    
     const instance = new web3.eth.Contract(
       JSON.parse(CampaignHQ.interface),
@@ -36,10 +37,9 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
     npm run dev
       
   ### Create a Kickstart Campaign 
-  You can launch have users fund your campaigns. Campaign owners create requests to spend the donations 
+  Launch a kickstart campaign. Campaign owners create requests to spend the donations 
   they receive. Campaign contributors then vote on which requests they approve. 
-  In order for the owner to spend the funds, the request must reach a quorum of approval from the contributors 
-  of the campaign. 
+  In order for the owner to spend funds, the request must reach a quorum of approval from the campaign contributors. 
  
   This provides additional assurance to campaign contributors that their donations will not be misallocated. 
   The smart contract allows the owner to spend funds ONLY when a specified portion of campaign contributors vote for 
