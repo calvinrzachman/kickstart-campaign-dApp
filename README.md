@@ -79,3 +79,7 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
   
   ### Unit test with Mocha  
     npm run test
+    
+  ### Important Note
+  This project was completed with the help of Stephen Grider to gain familiarity and experience working with web3 and Solidity.
+  It is for instructional and learning purposes ONLY and SHOULD NOT be used as stands for a production application
