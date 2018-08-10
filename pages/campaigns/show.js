@@ -1,3 +1,4 @@
+// UPDATING IN PROGRESS
 // Show Details of Specific Campaign
 import React, { Component } from "react";
 import Layout from "../../components/Layout";
@@ -19,6 +20,8 @@ class CampaignShow extends Component {
       requestCount: summary[2],
       contributorCount: summary[3],
       manager: summary[4],
+      quorum: summary[5],
+      fundingGoal: summary[6],
       address: props.query.address
     };
   }
@@ -29,7 +32,9 @@ class CampaignShow extends Component {
       manager,
       minimumContribution,
       requestCount,
-      contributorCount
+      contributorCount,
+      fundingGoal,
+      quorum
     } = this.props;
 
     const items = [
@@ -48,8 +53,13 @@ class CampaignShow extends Component {
       {
         header: minimumContribution,
         description:
-          "You must contribute at least this much in order to become an approver",
+          "You must contribute at least this much in order to vote on spending requests",
         meta: "Minimum Contribution (wei)"
+      },
+      {
+        header: fundingGoal,
+        description: "The initial funding goal in ether",
+        meta: "Funding Goal"
       },
       {
         header: contributorCount,
@@ -60,6 +70,13 @@ class CampaignShow extends Component {
         header: requestCount,
         description: "Requests must be approved by campaign contributors",
         meta: "Number of Requests"
+      },
+      // UPDATE
+      {
+        header: `${quorum}%`,
+        description:
+          "The portion of contributors approval neccesary to finalize requests",
+        meta: "Quorum"
       }
     ];
     return <Card.Group items={items} />;
@@ -81,7 +98,7 @@ class CampaignShow extends Component {
           </Grid>
           <Link route={`/campaigns/${this.props.address}/requests`}>
             <a>
-              <Button>View Requests</Button>
+              <Button style={{ marginTop: "20px" }}>View Requests</Button>
             </a>
           </Link>
         </div>
@@ -92,22 +109,4 @@ class CampaignShow extends Component {
 
 export default CampaignShow;
 
-// Summary Translation Layer
-
 // Styling: Use <Grid.Row> if you want to get the button off the card
-
-//   async renderCampaign() {
-//     let instance, data;
-//     const items = await this.props.campaigns.map(async address => {
-//       instance = new web3.eth.Contract(JSON.parse(Campaign.interface), address);
-//       data = await instance.methods.getSummary().call();
-//       console.log(data);
-//       return {
-//         header: address,
-//         description: { data },
-//         fluid: true
-//       };
-//     });
-//     console.log("ITEMS: ", items);
-//     return <Card.Group items={items} />;
-//   }
