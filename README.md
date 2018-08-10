@@ -89,4 +89,4 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
   Future Updates:
   The smart contract will be updated to make use of Open Zeppelin which (per their website) provides secure, tested and 
   community-audited code. In addition, an original and newly designed React/Redux Front-End application is in the works. 
-  The hope is to complete it in the coming month. Finally, Several bugs outlined in the Campaign.sol file need to be addressed
+  The hope is to complete it in the coming month. Finally, several bugs outlined in the Campaign.sol file need to be addressed
