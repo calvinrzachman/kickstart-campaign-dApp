@@ -81,12 +81,12 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
     npm run test
     
   ## Important Note
-  This project was completed with the help of Stephen Grider to gain familiarity and experience working with web3 and Solidity. 
-  It is for instructional and learning purposes ONLY and SHOULD NOT be used as stands for a production application.
-  All credits and appreciation to him for his design and guidance. In a world without many resources in this area, 
-  his efforts are very much appreciated.  
+  This project was completed with the guidance of Stephen Grider to gain familiarity and experience working with web3 and Solidity. 
+  All credits and appreciation to him for his design, especially on the Ethereum side. In a world without many resources 
+  in this area, his efforts are very much appreciated. Though several improvements were made, this project is for
+  instructional and learning purposes ONLY and SHOULD NOT be used as stands for a production application. 
   
   Future Updates:
   The smart contract will be updated to make use of Open Zeppelin which (per their website) provides secure, tested and 
   community-audited code. In addition, an original and newly designed React/Redux Front-End application is in the works. 
-  The hope is to complete it in the coming month. Several bugs outlined in the Campaign.sol file need to be addressed
+  The hope is to complete it in the coming month. Finally, Several bugs outlined in the Campaign.sol file need to be addressed
