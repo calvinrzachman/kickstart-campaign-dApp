@@ -124,18 +124,23 @@ contract Campaign {
 
 //-----------Future Updates--------------
 /*
+    - (IN PROGRESS**) Add the ability to specify the quorum required for request approval
+        Note: Since we cant use floating point need to covert the quorum number 
+    - (IN PROGRESS**) Add the ability to specify a funding goal (in ether) for the campaign 
     - Request approval Count continues to update after approval of request. This makes it appear
         as though the request was approved without quorum. (IMPORTANT) 
     - (DONE) Add a voting mechanism 
     - (DONE) Add approveRequest() and finalizeRequest() functions
-    - Add Donation phase/state. Then upon reaching goal enter the spending state
+    - (IN PROGRESS) Add Donation phase/state. Then upon reaching goal enter the spending state
        which unlocks ability to create, vote for, and finalize spend requests
        Make use of: //--------Introduce State Flow to Smart Contract-----------
     - Add check that spend requests do not attempt to transfer more than contract 
        balance (unless we can rely on ETH to do this)
-    - Add a pull payment function which allows users to withdraw funds after a specified time
+    - (IN PROGRESS) Add a pull payment function which allows users to withdraw funds after a specified time
        if the campaign goal is not met
     - (FIXED) contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT) 
+
+    - Add Form validation to all forms (LATER)
 */
 
 /*-----------Questions--------------
