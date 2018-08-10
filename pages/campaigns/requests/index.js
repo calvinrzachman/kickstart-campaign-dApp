@@ -43,9 +43,6 @@ class RequestIndex extends Component {
     const { Cell, Row, Headercell, Body } = Table;
     return (
       <Layout>
-        <Link route={`/campaigns/${this.props.address}`}>
-          <a>Back</a>
-        </Link>
         <h3>Pending Requests</h3>
         <Link route={`/campaigns/${this.props.address}/requests/new`}>
           <a>
