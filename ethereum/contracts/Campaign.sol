@@ -117,6 +117,11 @@ contract Campaign {
     
 }
 
+// IMPORTANT NOTE: This project was completed with the help of Stephen Grider to gain familiarity and 
+// experience working with web3 and Solidity. 
+// It is for instructional and learning purposes ONLY and SHOULD NOT be used as stands 
+// for a production application
+
 //-----------Future Updates--------------
 /*
     - (DONE) Add a voting mechanism 
@@ -129,6 +134,8 @@ contract Campaign {
     - Add a pull payment function which allows users to withdraw funds after a specified time
        if the campaign goal is not met
     - (FIXED) contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT) 
+    - Request approval Count continues to update after approval of request. This makes it appear
+        as though the request was approved without quorum. (IMPORTANT) 
 */
 
 /*-----------Questions--------------
@@ -137,5 +144,13 @@ contract Campaign {
        much info to user on error
 
 */  
+
+/*-----------Comments--------------
+  IMPORTANT NOTE: This project was completed with the help of Stephen Grider to gain familiarity and
+    experience working with web3 and Solidity.
+    It is for instructional and learning purposes ONLY and SHOULD NOT be used as stands
+    for a production application
+
+*/
 //-----------Changes--------------
 //-----------Testing--------------

@@ -56,4 +56,7 @@ export default CampaignIndex;
 // With Next.js componentDidMount is not executed on the server - instead use getInitialProps()
 // NOTE: This is only used with next.js
 
-// Anchor Tag allows for the right click open in new tab functionality
+// IMPORTANT NOTE: This project was completed with the help of Stephen Grider to gain familiarity and
+// experience working with web3 and Solidity.
+// It is for instructional and learning purposes ONLY and SHOULD NOT be used as stands
+// for a production application
