@@ -7,9 +7,9 @@ pragma solidity ^0.4.24;
 contract CampaignHQ {
     address[] public activeCampaigns;
     
-    function createCampaign(uint _minCont) public returns(address) {
+    function createCampaign(uint _minCont, uint _quorum, uint _fundingGoal) public returns(address) {
         // Creates contract, deploys and returns address
-        address newCampaign = new Campaign(msg.sender, _minCont); 
+        address newCampaign = new Campaign(msg.sender, _minCont, _quorum, _fundingGoal); 
         activeCampaigns.push(newCampaign);
     }
     
@@ -21,6 +21,14 @@ contract CampaignHQ {
 
 // Main Campaign Contract
 contract Campaign {
+
+    //--------Introduce State Flow to Smart Contract----------- (8/10)
+    enum States {
+        DONATION,       // Awaiting initial funding
+        ACTIVE,         // Campaign begins - Request creation/finalization live 
+        ACTIVE_WITHDRAW   // Campaign did not reach funding goal - Return Funds 
+                        // It is always safer to let contributors withdraw their money themselves.
+    } 
     
     // Create a Spending Request
     struct Request {
@@ -39,7 +47,14 @@ contract Campaign {
     mapping(address => bool) public contributors; 
     Request[] public requests;
     uint public contributorCount;
+
+    // UPDATE(8/10)
+    uint public quorum; // Require that this is a number between 1 and 100 
+    uint public fundingGoal;
+    States state; 
+    mapping(address => uint) private pendingReturns; // Allow withdrawals of funds
     
+
     //--------Define Function Modifiers-----------
     modifier onlyManager() {
         require(msg.sender == manager, "Only the campaign mangager can call");
@@ -50,11 +65,20 @@ contract Campaign {
         require(contributors[msg.sender], "Only campaign contributors can call");
         _;
     }
+
+    modifier isCurrentState(States _state) {    //Terminate if function is called during incorrect contract state
+        require(state == _state, "Operation is not available in current state");
+        _;
+    }
     
     //--------Contract Constructor-----------
-    constructor(address _creator, uint _minCont) public {
+    constructor(address _creator, uint _minCont, uint _quorum, uint _fundingGoal) public {
         manager = _creator;
         minimumContribution = _minCont;
+        quorum = _quorum;
+        fundingGoal = _fundingGoal; 
+        state = States.ACTIVE_WITHDRAW;
+        // Eventually set state to state = States.DONATION to initiate donation phase
     }
     
     //--------Define Main Contract Functions-----------
@@ -65,6 +89,8 @@ contract Campaign {
             contributorCount++;
         }
         // Allow multiple donations from same contributor but ONLY count them as one unique contributor
+
+        pendingReturns[msg.sender] += msg.value;    // Store value for possible later return 
     }
     
     function createRequest(string description, address recipient, uint value) 
@@ -100,20 +126,47 @@ contract Campaign {
         request.recipient.transfer(request.value);
     }
     
-     // UPDATE (FRONT END REACT HELPER)
-    function getSummary() public view returns (uint, uint, uint, uint, address) {
+     // UPDATE (8/10): Front End React Helper
+    function getSummary() public view returns (uint, uint, uint, uint, address, uint, uint) {
         return (
             this.balance,
             minimumContribution, 
             requests.length,
             contributorCount,
-            manager
+            manager,
+            quorum,
+            fundingGoal
         );
     }
 
     function getRequestsCount() public view returns (uint) {
         return requests.length;
     }
+
+    // UPDATE: Phase/State
+    // UPDATE (8/10): Return - Allow user to withdraw funds from a campaign.
+    function withdraw() 
+        public 
+        isCurrentState(States.ACTIVE_WITHDRAW)
+        hasDonated()
+    {
+        uint amount = pendingReturns[msg.sender];
+        if (amount > 0) {
+            // It is important to set this to zero because the recipient
+            // can call this function again as part of the receiving call
+            // before `transfer` returns (see the remark above about
+            // conditions -> effects -> interaction).
+            pendingReturns[msg.sender] = 0;
+            contributors[msg.sender] = false;   // Remove withdrawer from list of contributors
+            contributorCount--;
+
+            msg.sender.transfer(amount);
+        }
+    }
+    // NOTE: if they withdraw, they should be removed from the list of contributors
+
+    //--------Fallback Function-----------
+    function () public payable {}
     
 }
 
@@ -124,22 +177,25 @@ contract Campaign {
 
 //-----------Future Updates--------------
 /*
-    - (IN PROGRESS**) Add the ability to specify the quorum required for request approval
-        Note: Since we cant use floating point need to covert the quorum number 
-    - (IN PROGRESS**) Add the ability to specify a funding goal (in ether) for the campaign 
     - Request approval Count continues to update after approval of request. This makes it appear
         as though the request was approved without quorum. (IMPORTANT) 
+    - (DONE**) Add the ability to specify the quorum required for request approval
+        Note: Since we cant use floating point need to covert the quorum number 
+    - (DONE) Add the ability to specify a funding goal (in ether) for the campaign 
     - (DONE) Add a voting mechanism 
     - (DONE) Add approveRequest() and finalizeRequest() functions
-    - (IN PROGRESS) Add Donation phase/state. Then upon reaching goal enter the spending state
+    - (IN PROGRESS - Difficult/Long) Add Donation phase/state. Then upon reaching goal enter the spending state
        which unlocks ability to create, vote for, and finalize spend requests
        Make use of: //--------Introduce State Flow to Smart Contract-----------
-    - Add check that spend requests do not attempt to transfer more than contract 
+    - (DONE - LIKELY) Add check that spend requests do not attempt to transfer more than contract 
        balance (unless we can rely on ETH to do this)
-    - (IN PROGRESS) Add a pull payment function which allows users to withdraw funds after a specified time
+    - (DONE) Add a pull payment function which allows users to withdraw funds after a specified time
        if the campaign goal is not met
-    - (FIXED) contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT) 
 
+       - (DONE) Ensure that if contributor withdraws, they are removed from the list of contributors
+       - BUG: If contributor gets paid by spending request, they cannot withdraw
+    - (FIXED) contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT) 
+    - (DONE) Add CampaignForm component
     - Add Form validation to all forms (LATER)
 */
 
