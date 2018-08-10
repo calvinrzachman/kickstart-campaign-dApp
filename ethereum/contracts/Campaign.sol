@@ -124,6 +124,8 @@ contract Campaign {
 
 //-----------Future Updates--------------
 /*
+    - Request approval Count continues to update after approval of request. This makes it appear
+        as though the request was approved without quorum. (IMPORTANT) 
     - (DONE) Add a voting mechanism 
     - (DONE) Add approveRequest() and finalizeRequest() functions
     - Add Donation phase/state. Then upon reaching goal enter the spending state
@@ -134,8 +136,6 @@ contract Campaign {
     - Add a pull payment function which allows users to withdraw funds after a specified time
        if the campaign goal is not met
     - (FIXED) contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT) 
-    - Request approval Count continues to update after approval of request. This makes it appear
-        as though the request was approved without quorum. (IMPORTANT) 
 */
 
 /*-----------Questions--------------
@@ -152,5 +152,3 @@ contract Campaign {
     for a production application
 
 */
-//-----------Changes--------------
-//-----------Testing--------------
