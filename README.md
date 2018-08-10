@@ -87,6 +87,11 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
   instructional and learning purposes ONLY and SHOULD NOT be used as stands for a production application. 
   
   Future Updates:
+  Kickstart campaigns will specify an initial funding goal/deadline and proceed through an initial `Donation` phase 
+  where users can donate funds. Upon reaching the funding goal, the campaign manager will unlock the ability to 
+  create/finalize spending requests. Should the campaign not reach its funding goal by the deadline donations can 
+  still continue, however, contributors will have the ability to withdraw their funds from the campaign. 
+  
   The smart contract will be updated to make use of Open Zeppelin which (per their website) provides secure, tested and 
   community-audited code. In addition, an original and newly designed React/Redux Front-End application is in the works. 
   The hope is to complete it in the coming month. Finally, several bugs outlined in the Campaign.sol file need to be addressed
