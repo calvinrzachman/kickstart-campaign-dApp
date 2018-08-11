@@ -70,6 +70,12 @@ contract Campaign {
         require(state == _state, "Operation is not available in current state");
         _;
     }
+
+    modifier hasNotVoted(uint index) {
+        Request storage request = requests[index];
+        require(!request.approvals[msg.sender], "This account has already voted");
+        _;
+    }
     
     //--------Contract Constructor-----------
     constructor(address _creator, uint _minCont, uint _quorum, uint _fundingGoal) public {
@@ -108,12 +114,11 @@ contract Campaign {
         // Campaign manager creates a request to spend funds
     }
 
-    function approveRequest(uint index) public hasDonated() {
+    function approveRequest(uint index) public hasDonated() hasNotVoted(index) {
         // Participants can approve a Spend Request 
         Request storage request = requests[index];
         
         // Participants can only vote once on a spending request
-        require(!request.approvals[msg.sender], "Already approved");
         request.approvals[msg.sender] = true;
         request.approvalCount++;
     }
@@ -195,8 +200,6 @@ contract Campaign {
        - (DONE) Ensure that if contributor withdraws, they are removed from the list of contributors
        - BUG: If contributor gets paid by spending request, they cannot withdraw
     - (FIXED) contributorCount currently does not reflect number of UNIQUE contributors (IMPORTANT) 
-    - (DONE) Add CampaignForm component
-    - Add Form validation to all forms (LATER)
 */
 
 /*-----------Questions--------------
