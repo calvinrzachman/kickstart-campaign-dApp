@@ -192,6 +192,13 @@ contract Campaign {
     - (IN PROGRESS - Difficult/Long) Add Donation phase/state. Then upon reaching goal enter the spending state
        which unlocks ability to create, vote for, and finalize spend requests
        Make use of: //--------Introduce State Flow to Smart Contract-----------
+
+        - Inialize DONATION phase
+        - add check/event for if funding goal has been reached
+            - (DONE) requires specification of funding goal and time 
+        - if funding goal is reached before funding time then move to ACTIVE PHASE
+        - if funding goal is not reached before funding time, move to ACTIVE WITHDRAW PHASE
+
     - (DONE - LIKELY) Add check that spend requests do not attempt to transfer more than contract 
        balance (unless we can rely on ETH to do this)
     - (DONE) Add a pull payment function which allows users to withdraw funds after a specified time
