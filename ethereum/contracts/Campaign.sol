@@ -7,9 +7,9 @@ pragma solidity ^0.4.24;
 contract CampaignHQ {
     address[] public activeCampaigns;
     
-    function createCampaign(uint _minCont, uint _quorum, uint _fundingGoal) public returns(address) {
+    function createCampaign(uint _minCont, uint _quorum, uint _fundingGoal, uint _fundingTime) public returns(address) {
         // Creates contract, deploys and returns address
-        address newCampaign = new Campaign(msg.sender, _minCont, _quorum, _fundingGoal); 
+        address newCampaign = new Campaign(msg.sender, _minCont, _quorum, _fundingGoal, _fundingTime); 
         activeCampaigns.push(newCampaign);
     }
     
@@ -26,7 +26,7 @@ contract Campaign {
     enum States {
         DONATION,       // Awaiting initial funding
         ACTIVE,         // Campaign begins - Request creation/finalization live 
-        ACTIVE_WITHDRAW   // Campaign did not reach funding goal - Return Funds 
+        ACTIVE_WITHDRAW // Campaign did not reach funding goal - Return Funds 
                         // It is always safer to let contributors withdraw their money themselves.
     } 
     
@@ -53,7 +53,14 @@ contract Campaign {
     uint public fundingGoal;
     States state; 
     mapping(address => uint) private pendingReturns; // Allow withdrawals of funds
-    
+    uint public fundingExpiry; 
+
+    //--------Define Events to be fired on changes-----------
+    event FundingGoalReached(uint fundingGoal, uint balance);
+    event GoalNotReached(uint expirationTime, uint time);
+    event Withdrawal(address indexed to, uint amount);
+	event Deposit(address indexed from, uint amount);
+    event stateChange(uint _state);
 
     //--------Define Function Modifiers-----------
     modifier onlyManager() {
@@ -76,19 +83,49 @@ contract Campaign {
         require(!request.approvals[msg.sender], "This account has already voted");
         _;
     }
+
+    modifier isCurrentStateNot(States _state) {
+        require(state != _state, "Operation not available in current state (WRONG)");
+        _;
+    }
+    
+    modifier pretransition() {  
+    // this modifier will transition to the next state before executing the rest of the decorated function
+        // State Change Check
+        uint _state;
+        if(state == States.DONATION) {              // Avoid gas cost of checks if not in Donation phase
+            if (block.timestamp > fundingExpiry && this.balance < fundingGoal) {
+                _state = changeState(States.ACTIVE_WITHDRAW);
+                emit GoalNotReached(fundingExpiry, block.timestamp);
+                emit stateChange(_state);
+            }
+            if (this.balance >= fundingGoal) {
+                _state = changeState(States.ACTIVE);
+                emit FundingGoalReached(fundingGoal, this.balance); 
+                emit stateChange(_state);
+            }
+        }
+        _;
+    }
+    
+    function changeState(States _state) public returns (uint) {
+        state = _state; //Go to specified state
+        return uint(state);
+    }
     
     //--------Contract Constructor-----------
-    constructor(address _creator, uint _minCont, uint _quorum, uint _fundingGoal) public {
+    constructor(address _creator, uint _minCont, uint _quorum, uint _fundingGoal, uint _fundingTime) public {
         manager = _creator;
         minimumContribution = _minCont;
         quorum = _quorum;
         fundingGoal = _fundingGoal; 
-        state = States.ACTIVE_WITHDRAW;
+        state = States.DONATION;
+        fundingExpiry = block.timestamp + _fundingTime;
         // Eventually set state to state = States.DONATION to initiate donation phase
     }
     
     //--------Define Main Contract Functions-----------
-    function contribute() public payable {
+    function contribute() public payable pretransition() {
         require(msg.value >= minimumContribution,"Donation must exceed minimum contribution");
         if (!contributors[msg.sender]) {       // ONLY unique contributers
             contributors[msg.sender] = true;   // Add sender to list of contributers
@@ -100,7 +137,8 @@ contract Campaign {
     }
     
     function createRequest(string description, address recipient, uint value) 
-        public onlyManager() 
+        public onlyManager()
+        isCurrentStateNot(States.DONATION)  
     {
         Request memory newRequest = Request({
             description: description,
@@ -126,7 +164,7 @@ contract Campaign {
     function finalizeRequest(uint index) public onlyManager() {
         Request storage request = requests[index];
         require(!request.complete, "Request already finalized");
-        require(request.approvalCount > (contributorCount / 2), "Quorum not reached");
+        require(request.approvalCount > (contributorCount / (100/quorum)), "Quorum not reached");
         request.complete = true;
         request.recipient.transfer(request.value);
     }
@@ -148,7 +186,11 @@ contract Campaign {
         return requests.length;
     }
 
-    // UPDATE: Phase/State
+    function getState() public view returns (uint) {
+        return uint(state);
+        // returns a uint `i` representing the ith state in the States enum 
+    }
+
     // UPDATE (8/10): Return - Allow user to withdraw funds from a campaign.
     function withdraw() 
         public 
@@ -166,12 +208,15 @@ contract Campaign {
             contributorCount--;
 
             msg.sender.transfer(amount);
+            emit Withdrawal(msg.sender, amount);
         }
     }
     // NOTE: if they withdraw, they should be removed from the list of contributors
 
     //--------Fallback Function-----------
-    function () public payable {}
+    function () public payable pretransition() {
+        emit Deposit(msg.sender, msg.value);
+    }
     
 }
 
