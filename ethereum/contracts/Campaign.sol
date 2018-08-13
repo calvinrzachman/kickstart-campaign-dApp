@@ -59,7 +59,7 @@ contract Campaign {
     event FundingGoalReached(uint fundingGoal, uint balance);
     event GoalNotReached(uint expirationTime, uint time);
     event Withdrawal(address indexed to, uint amount);
-	event Deposit(address indexed from, uint amount);
+    event Deposit(address indexed from, uint amount);
     event stateChange(uint _state);
 
     //--------Define Function Modifiers-----------
