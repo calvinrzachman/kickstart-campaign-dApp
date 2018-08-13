@@ -29,8 +29,9 @@ class CampaignForm extends Component {
         .createCampaign(
           this.state.minimumContribution,
           this.state.quorum,
-          this.state.fundingGoal
-        ) // EDIT this to pass quorum
+          this.state.fundingGoal,
+          this.state.fundingDeadline
+        )
         .send({ from: accounts[0] });
       Router.pushRoute("/"); // Redirect user to root route (home page)
     } catch (err) {
@@ -65,7 +66,7 @@ class CampaignForm extends Component {
           <Input
             value={this.state.fundingGoal}
             labelPosition="right"
-            label="ether"
+            label="wei"
             placeholder="Please enter a funding target"
             onChange={event =>
               this.setState({ fundingGoal: event.target.value })
