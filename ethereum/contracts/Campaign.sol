@@ -121,7 +121,6 @@ contract Campaign {
         fundingGoal = _fundingGoal; 
         state = States.DONATION;
         fundingExpiry = block.timestamp + _fundingTime;
-        // Eventually set state to state = States.DONATION to initiate donation phase
     }
     
     //--------Define Main Contract Functions-----------
