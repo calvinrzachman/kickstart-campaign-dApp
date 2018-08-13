@@ -4,7 +4,7 @@ import CampaignHQ from "./build/CampaignHQ.json";
 
 const instance = new web3.eth.Contract(
   JSON.parse(CampaignHQ.interface),
-  "0x7f2015c6d0E3F025FE925ea3bAb93981884fAD5F" // Hard coded address of deployed CampaignHQ
+  "0x9FA984c30C34D2f57b9C9B306fc9bedBE25f6aA9" // Hard coded address of deployed CampaignHQ
 );
 
 export default instance; // If we ever need access to the deployed CampaignHQ import this file
