@@ -1,6 +1,8 @@
 # kickstart-campaign-dApp
 A Smart Contract for a basic kickstart campaign - Solidity/React dApp 
 
+![Homepage](./images/homepage.png)
+
 ## To run the application: 
   ### Deploy Contracts and Create Application Instance 
   1. Clone the repository
@@ -45,6 +47,8 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
   The smart contract allows the owner to spend funds ONLY when a specified portion of campaign contributors vote for 
   and approve of the spending request.  
   
+  ![Create Campaign](./images/newCampaign.png)
+  
   #### Create Campaign 
   1. Select either the `Create Campaign` or `+` button
   2. Specify the minimum contribution to the campaign 
@@ -52,6 +56,8 @@ A Smart Contract for a basic kickstart campaign - Solidity/React dApp
   #### View Campaign Details 
   1. Navigate to the home page where your newly created campaign should be visible on the list of `Open Campaigns`
   2. Locate your campaign and select `View Campaign`
+  
+  ![Campaign Details](./images/campaignDetails.png)
   
   Here you will be presented with a collection of information on the campaign including:
     
